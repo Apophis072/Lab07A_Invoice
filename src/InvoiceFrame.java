@@ -5,10 +5,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class InvoiceFrame extends JFrame {
-    private JTextField nameField, quantityField, priceField;
-    private JTextArea itemDetailsArea, totalArea;
+    private JTextField nameField;
+    private JTextField quantityField;
+    private JTextField priceField;
+    private JTextArea inforArea;
+    private JTextArea totalArea;
     private ArrayList<LineItem> items;
     private double amountDue;
+    private JPanel mainPnl;
+    private JPanel inputPnl;
 
     public InvoiceFrame() {
         //Sets up the frame that everything is going to be added to
@@ -22,27 +27,27 @@ public class InvoiceFrame extends JFrame {
         items = new ArrayList<>();
 
         // Creates Main Panel
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPnl = new JPanel(new BorderLayout());
 
-        // Creates Title Panel
+        // Creates Title Label
         JLabel titleLabel = new JLabel("Invoice", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Roboto", Font.BOLD, 48));
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        mainPnl.add(titleLabel, BorderLayout.NORTH);
 
         // Creates Input Panel
-        JPanel inputPanel = new JPanel(new GridLayout(4, 2));
+        inputPnl = new JPanel(new GridLayout(4, 2));
 
-        inputPanel.add(new JLabel("Product Name:"));
+        inputPnl.add(new JLabel("Product Name:"));
         nameField = new JTextField();
-        inputPanel.add(nameField);
+        inputPnl.add(nameField);
 
-        inputPanel.add(new JLabel("Quantity:"));
+        inputPnl.add(new JLabel("Quantity:"));
         quantityField = new JTextField();
-        inputPanel.add(quantityField);
+        inputPnl.add(quantityField);
 
-        inputPanel.add(new JLabel("Price per Unit:"));
+        inputPnl.add(new JLabel("Price per Unit:"));
         priceField = new JTextField();
-        inputPanel.add(priceField);
+        inputPnl.add(priceField);
 
         //Creates the buttons to add products and to exit
         //If have extra time then write a code to check if user really want to exit
@@ -61,16 +66,16 @@ public class InvoiceFrame extends JFrame {
             }
         });
 
-        inputPanel.add(addButton);
-        inputPanel.add(exitButton);
-        mainPanel.add(inputPanel, BorderLayout.CENTER);
+        inputPnl.add(addButton);
+        inputPnl.add(exitButton);
+        mainPnl.add(inputPnl, BorderLayout.CENTER);
 
         // Item Details Panel
         JPanel itemDetailsPanel = new JPanel(new BorderLayout());
-        itemDetailsArea = new JTextArea(10, 50);
-        itemDetailsArea.setEditable(false);
-        itemDetailsPanel.add(new JScrollPane(itemDetailsArea), BorderLayout.CENTER);
-        mainPanel.add(itemDetailsPanel, BorderLayout.WEST);
+        inforArea = new JTextArea(10, 50);
+        inforArea.setEditable(false);
+        itemDetailsPanel.add(new JScrollPane(inforArea), BorderLayout.CENTER);
+        mainPnl.add(itemDetailsPanel, BorderLayout.WEST);
 
         // Amount Due Panel
         JPanel amountDuePanel = new JPanel(new BorderLayout());
@@ -78,9 +83,9 @@ public class InvoiceFrame extends JFrame {
         totalArea = new JTextArea(5, 20);
         totalArea.setEditable(false);
         amountDuePanel.add(new JScrollPane(totalArea), BorderLayout.CENTER);
-        mainPanel.add(amountDuePanel, BorderLayout.SOUTH);
+        mainPnl.add(amountDuePanel, BorderLayout.SOUTH);
 
-        add(mainPanel);
+        add(mainPnl);
         setVisible(true);
     }
 
@@ -97,9 +102,9 @@ public class InvoiceFrame extends JFrame {
 
         //Format for how the product is going to be outputted
         //Had some help with formatting
-        itemDetailsArea.append("Product\t           Price   quantity   total price\n");
-        itemDetailsArea.append(String.format("%-30s%8.2f%7d%9.2f\n", name, price, quantity, totalPrice));
-        itemDetailsArea.append("\n");
+        inforArea.append("Product\t           Price   quantity   total price\n");
+        inforArea.append(String.format("%-30s%8.2f%7d%9.2f\n", name, price, quantity, totalPrice));
+        inforArea.append("\n");
         //Outputs the final cost
         totalArea.setText(String.format("Total: $%.2f", amountDue));
 
