@@ -8,7 +8,7 @@ public class InvoiceFrame extends JFrame {
     private JTextField nameField, quantityField, priceField;
     private JTextArea itemDetailsArea, totalArea;
     private ArrayList<LineItem> items;
-    private double finalTotal;
+    private double amountDue;
 
     public InvoiceFrame() {
         //Sets up the frame that everything is going to be added to
@@ -60,7 +60,7 @@ public class InvoiceFrame extends JFrame {
                 System.exit(0);
             }
         });
-        
+
         inputPanel.add(addButton);
         inputPanel.add(exitButton);
         mainPanel.add(inputPanel, BorderLayout.CENTER);
@@ -72,13 +72,13 @@ public class InvoiceFrame extends JFrame {
         itemDetailsPanel.add(new JScrollPane(itemDetailsArea), BorderLayout.CENTER);
         mainPanel.add(itemDetailsPanel, BorderLayout.WEST);
 
-        // Total Panel
-        JPanel totalPanel = new JPanel(new BorderLayout());
-        totalPanel.setBorder(BorderFactory.createTitledBorder("Total"));
+        // Amount Due Panel
+        JPanel amountDuePanel = new JPanel(new BorderLayout());
+        amountDuePanel.setBorder(BorderFactory.createTitledBorder("Amount Due"));
         totalArea = new JTextArea(5, 20);
         totalArea.setEditable(false);
-        totalPanel.add(new JScrollPane(totalArea), BorderLayout.CENTER);
-        mainPanel.add(totalPanel, BorderLayout.SOUTH);
+        amountDuePanel.add(new JScrollPane(totalArea), BorderLayout.CENTER);
+        mainPanel.add(amountDuePanel, BorderLayout.SOUTH);
 
         add(mainPanel);
         setVisible(true);
@@ -90,7 +90,7 @@ public class InvoiceFrame extends JFrame {
         int quantity = Integer.parseInt(quantityField.getText());
         double price = Double.parseDouble(priceField.getText());
         double totalPrice = quantity * price;
-        finalTotal += totalPrice;
+        amountDue += totalPrice;
 
         LineItem item = new LineItem(name, quantity, price, totalPrice);
         items.add(item);
@@ -101,7 +101,7 @@ public class InvoiceFrame extends JFrame {
         itemDetailsArea.append(String.format("%-30s%8.2f%7d%9.2f\n", name, price, quantity, totalPrice));
         itemDetailsArea.append("\n");
         //Outputs the final cost
-        totalArea.setText(String.format("Total: $%.2f", finalTotal));
+        totalArea.setText(String.format("Total: $%.2f", amountDue));
 
         nameField.setText("");
         quantityField.setText("");
@@ -116,11 +116,11 @@ class LineItem {
     private double price;
     private double total;
 
-    public LineItem(String name, int quantity, double price, double total) {
+    public LineItem(String name, int quantity, double price, double amountDue) {
         this.product = name;
         this.quantity = quantity;
         this.price = price;
-        this.total = total;
+        this.total = amountDue;
     }
 
 
